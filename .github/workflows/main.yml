@@ -1,0 +1,17 @@
+on: pull_request
+
+jobs:
+  evaluate_iam_policy:
+    runs-on: ubuntu-latest
+    name: Evaluate IAM Policy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Comment PR
+        shell: bash
+        with:
+          TOKEN: ${{ secrets.IAMBOT_GITHUB_TOKEN }}
+        run: |
+          echo $TOKEN
+          echo $IAMBOT_GITHUB_TOKEN
