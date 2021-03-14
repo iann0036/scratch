@@ -28,4 +28,4 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${PULL_NUMBER}/comments \
-            -d "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
+            -d "{\"body\":\"Generated IAM Policy:\n\n\n${POLICY}\n\"}"
