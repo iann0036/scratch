@@ -10,8 +10,7 @@ jobs:
 
       - name: Comment PR
         shell: bash
-        with:
-          TOKEN: ${{ secrets.IAMBOT_GITHUB_TOKEN }}
         run: |
           echo $TOKEN
           echo $IAMBOT_GITHUB_TOKEN
+          echo ${{ secrets.IAMBOT_GITHUB_TOKEN }}
