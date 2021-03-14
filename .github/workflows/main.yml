@@ -19,7 +19,7 @@ jobs:
       - name: Comment PR
         shell: bash
         run: |
-          POLICY=$(iamfast-js test1.js | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g')
+          POLICY=$(iamfast-js test1.js | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g')
           echo $POLICY
           PULL_NUMBER=$(jq --raw-output .pull_request.number "${GITHUB_EVENT_PATH}")
           echo "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
@@ -28,4 +28,4 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${PULL_NUMBER}/comments \
-            -d "{\'body\':\'Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\'}"
+            -d "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
