@@ -19,7 +19,7 @@ jobs:
       - name: Comment PR
         shell: bash
         run: |
-          POLICY=$(iamfast-js test1.js | sed 's/$/\\n/')
+          POLICY=$(iamfast-js test1.js | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g')
           echo $POLICY
           PULL_NUMBER=$(jq --raw-output .pull_request.number "${GITHUB_EVENT_PATH}")
           echo "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
