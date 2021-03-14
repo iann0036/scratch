@@ -11,6 +11,10 @@ jobs:
       - name: Comment PR
         shell: bash
         run: |
-          echo $TOKEN
-          echo $IAMBOT_GITHUB_TOKEN
-          echo ${{ secrets.IAMBOT_GITHUB_TOKEN }}
+          PULL_NUMBER=$(jq --raw-output .pull_request.number "${GITHUB_EVENT_PATH}")
+          curl \
+            -H "Authorization: token ${{ secrets.IAMBOT_GITHUB_TOKEN }}" \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${PULL_NUMBER}/comments \
+            -d '{"body":"Comment Test"}'
