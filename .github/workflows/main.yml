@@ -19,9 +19,10 @@ jobs:
       - name: Comment PR
         shell: bash
         run: |
-          POLICY=$(iamfast-js test1.js)
+          POLICY=$(iamfast-js test1.js | sed 's/$/\\n/')
           echo $POLICY
           PULL_NUMBER=$(jq --raw-output .pull_request.number "${GITHUB_EVENT_PATH}")
+          echo "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
           curl \
             -H "Authorization: token ${{ secrets.IAMBOT_GITHUB_TOKEN }}" \
             -X POST \
