@@ -22,10 +22,15 @@ jobs:
           POLICY=$(iamfast-js test1.js | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g')
           echo $POLICY
           PULL_NUMBER=$(jq --raw-output .pull_request.number "${GITHUB_EVENT_PATH}")
-          echo "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
           curl \
             -H "Authorization: token ${{ secrets.IAMBOT_GITHUB_TOKEN }}" \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${PULL_NUMBER}/comments \
-            -d "{\"body\":\"Generated IAM Policy:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
+            -d "{\"body\":\"An AWS IAM policy was generated for this PR and was **approved**. The generated policy was as follows:\n\n\`\`\`\n${POLICY}\n\`\`\`\"}"
+          curl \
+            -H "Authorization: token ${{ secrets.IAMBOT_GITHUB_TOKEN }}" \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${PULL_NUMBER}/labels \
+            -d '{"labels":["iam-approved"]}'
